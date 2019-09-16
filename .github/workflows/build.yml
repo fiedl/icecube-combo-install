@@ -10,14 +10,15 @@ jobs:
       fail-fast: false
       matrix:
         release: [V06-01-01, trunk]
-        platform: [macOS-10.14]
+        platform: [macOS-10.14, ubuntu-18.04]
 
     steps:
     - uses: actions/checkout@v1
     - name: Build icecube-simulation
-      run: bash -v -e ./install-on-mac-os.sh
+      run: bash -v -e ./install.sh
       env:
         RELEASE: ${{ matrix.release }}
         SVN: ${{ secrets.SVN }}
         SVN_ICECUBE_USERNAME: icecube
         SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
+        PLATFORM: ${{ matrix.platform }}

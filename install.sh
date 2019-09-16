@@ -28,31 +28,46 @@ export PATH=/usr/local/sbin:$PATH
 export PATH=/usr/local/opt/python/libexec/bin:$PATH
 
 # Install Homebrew package manager (http://brew.sh):
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+if [[ "$PLATFORM" = "macOS-10.14" ]]; then
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
 
 # Install python 3
-brew info python
-brew list python || brew install python
+if [[ "$PLATFORM" = "macOS-10.14" ]]; then
+  brew info python
+  brew list python || brew install python
+fi
 
 # Install boost with python bindings
-brew info boost
-brew install fiedl/homebrew-icecube/boost@1.69
-brew info boost-python
-brew info boost-python3
-brew install fiedl/homebrew-icecube/boost-python3@1.69
+if [[ "$PLATFORM" = "macOS-10.14" ]]; then
+  brew info boost
+  brew install fiedl/homebrew-icecube/boost@1.69
+  brew info boost-python
+  brew info boost-python3
+  brew install fiedl/homebrew-icecube/boost-python3@1.69
+fi
 
 # Install python packages
 pip install numpy
 pip install scipy
 
 # Install packages needed for building icecube-simulation
-brew list cmake || brew install cmake
-brew install gsl cfitsio
+if [[ "$PLATFORM" = "macOS-10.14" ]]; then
+  brew list cmake || brew install cmake
+  brew install gsl cfitsio
+else
+  # http://software.icecube.wisc.edu/documentation/projects/cmake/supported_platforms/debian_variants.html
+  apt-get install build-essential cmake libbz2-dev libgl1-mesa-dev freeglut3-dev libxml2-dev subversion libboost-python-dev libboost-system-dev libboost-thread-dev libboost-date-time-dev libboost-serialization-dev libboost-filesystem-dev libboost-program-options-dev libboost-regex-dev libboost-iostreams-dev libgsl0-dev libcdk5-dev libarchive-dev python-scipy ipython-qtconsole libqt4-dev python-urwid
+  apt-get install libz-dev libqt5opengl5-dev libstarlink-pal-dev python-sphinx libopenblas-dev
+  apt-get install libcfitsio3-dev libsprng2-dev libmysqlclient-dev libsuitesparse-dev
+fi
 
 # Install qt5 needed for steamshovel event display viewer
-brew info qt
-brew install qt
-#brew install pyqt
+if [[ "$PLATFORM" = "macOS-10.14" ]]; then
+  brew info qt
+  brew install qt
+  #brew install pyqt
+fi
 
 ## Install packages from icecube sources, e.g. random number generator
 #brew tap IceCube-SPNO/homebrew-icecube

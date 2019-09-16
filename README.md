@@ -4,11 +4,11 @@
 
 This repository provides reproducible install instructions for the icecube-simulation framework.
 
-## Installation on macOS
+## Installation on macOS and Ubuntu
 
-The file [install-on-mac-os.sh](install-on-mac-os.sh) contains instructions on how to install the icecube-simulation framework on macOS.
+The file [install.sh](install.sh) contains instructions on how to install the icecube-simulation framework on macOS and Ubuntu.
 
-## Automated Build Using Vagrant
+## Automated Build Using Vagrant on macOS
 
 In order to have the install scriot run on a virtual machine, this repository provides [Vagrant](http://vagrantup.com) instructions in the [Vagrantfile](Vagrantfile).
 
@@ -46,3 +46,4 @@ After changing the install scripts, rerun via `vagrant provision` or `vagrant re
 - [Installing icecube-simulation V05-00-07 with Python 2 on macOS Sierra](https://github.com/fiedl/hole-ice-study/blob/master/notes/2016-11-15_Installing_IceSim_on_macOS_Sierra.md)
 - [Installing icecube-simulation V05-00-07 with Python 2 in Zeuthen](https://github.com/fiedl/hole-ice-study/blob/master/notes/2018-01-23_Installing_IceSim_in_Zeuthen.md)
 - Install instructions by Kevin M.: https://code.icecube.wisc.edu/projects/icecube/ticket/2225#comment:2
+- Install instructions for ubuntu: http://software.icecube.wisc.edu/documentation/projects/cmake/supported_platforms/debian_variants.html
