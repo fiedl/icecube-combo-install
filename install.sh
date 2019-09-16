@@ -59,7 +59,7 @@ else
   # http://software.icecube.wisc.edu/documentation/projects/cmake/supported_platforms/debian_variants.html
   sudo apt-get install build-essential cmake libbz2-dev libgl1-mesa-dev freeglut3-dev libxml2-dev subversion libboost-python-dev libboost-system-dev libboost-thread-dev libboost-date-time-dev libboost-serialization-dev libboost-filesystem-dev libboost-program-options-dev libboost-regex-dev libboost-iostreams-dev libgsl0-dev libcdk5-dev libarchive-dev python-scipy ipython-qtconsole libqt4-dev python-urwid
   sudo apt-get install libz-dev libqt5opengl5-dev libstarlink-pal-dev python-sphinx libopenblas-dev
-  sudo apt-get install libcfitsio3-dev libsprng2-dev libmysqlclient-dev libsuitesparse-dev
+  sudo apt-get install libcfitsio-dev libsprng2-dev libmysqlclient-dev libsuitesparse-dev
 fi
 
 # Install qt5 needed for steamshovel event display viewer
