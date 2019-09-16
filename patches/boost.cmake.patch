@@ -1,0 +1,30 @@
+Index: projects/cmake/trunk/tools/boost.cmake
+===================================================================
+--- a/projects/cmake/trunk/tools/boost.cmake
++++ b/projects/cmake/trunk/tools/boost.cmake
+@@ -25,11 +25,11 @@
+ colormsg(HICYAN "Boost")
+ set(Boost_USE_STATIC_LIBS OFF)
+ set(Boost_USE_MULTITHREADED ON)
+ set(Boost_USE_STATIC_RUNTIME OFF)
+ if (SYSTEM_PACKAGES)
+-  set(BASE_COMPONENTS system signals thread date_time filesystem program_options regex iostreams)
++  set(BASE_COMPONENTS system thread date_time filesystem program_options regex iostreams)
+   # From the cmake docs:
+   # Boost Python components require a Python version suffix (Boost 1.67 and later),
+   # e.g. python36 or python27 for the versions built against Python 3.6 and 2.7, respectively.
+   #
+   # Make a first pass at finding boost, with no components specified, just to figure out
+@@ -61,11 +61,11 @@
+ if((NOT SYSTEM_PACKAGES) OR (NOT Boost_FOUND))
+   set(BOOST_PORTSVERSION "1.38.0" CACHE PATH "The boost version.")
+   set(BOOST_INCLUDEDIR ${I3_PORTS}/include/boost-${BOOST_PORTSVERSION})
+   set(BOOST_LIBRARYDIR ${I3_PORTS}/lib/boost-${BOOST_PORTSVERSION})
+   set(Boost_NO_SYSTEM_PATHS TRUE)
+-  find_package(Boost ${BOOST_PORTSVERSION} EXACT REQUIRED COMPONENTS python system signals thread date_time filesystem program_options regex iostreams)
++  find_package(Boost ${BOOST_PORTSVERSION} EXACT REQUIRED COMPONENTS python system thread date_time filesystem program_options regex iostreams)
+ endif((NOT SYSTEM_PACKAGES) OR (NOT Boost_FOUND))
+
+ if(Boost_FOUND)
+   set(BOOST_FOUND TRUE CACHE BOOL "Boost found successfully")
+   set(BOOST_INCLUDE_DIR ${Boost_INCLUDE_DIR} CACHE PATH "Path to the boost include directories.")

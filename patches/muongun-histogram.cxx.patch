@@ -1,0 +1,4 @@
+26c26
+< 	Py_ssize_t shape[] = { size/sizeof(double) };
+---
+> 	Py_ssize_t shape[] = { static_cast<Py_ssize_t>(size/sizeof(double)) };
