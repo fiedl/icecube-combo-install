@@ -8,6 +8,37 @@ This repository provides reproducible install instructions for the icecube-simul
 
 The file [install.sh](install.sh) contains instructions on how to install the icecube-simulation framework on macOS and Ubuntu.
 
+## Use as Github Action
+
+In order to have icecube-simulation built during a [github-actions workflow](https://github.com/features/actions), you may include this script as workflow step like this:
+
+```
+# .github/workflows/build.yml
+
+name: build
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: "Checkout and build icecube-simulation framework"
+      uses: fiedl/icecube-simulation-install
+      env:
+        RELEASE: V06-01-01
+        PLATFORM: ubuntu-18.04
+        SVN: ${{ secrets.SVN }}
+        SVN_ICECUBE_USERNAME: icecube
+        SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
+```
+
+This will checkout icecube-simulation into `~/icecube/software/icecube-simulation-V06-01-01/src` and build it into `~/icecube/software/icecube-simulation-V06-01-01/debug_build`.
+
+For a working example, have a look at:
+- TODO: monopole-generator
+- TODO: clsim
+
 ## Automated Build Using Vagrant on macOS
 
 In order to have the install scriot run on a virtual machine, this repository provides [Vagrant](http://vagrantup.com) instructions in the [Vagrantfile](Vagrantfile).
