@@ -10,11 +10,13 @@ inputs:
     default: ubuntu-18.04
   svn:
     description: "The url of our svn repository, ending with '/svn': 'http://code..../svn'"
+    required: true
   svn_icecube_username:
     description: The svn user to use to fetch the icecube-simulation sourcecode.
     default: icecube
   svn_icecube_password:
     description: The svn password to use to fetch the icecube-simulation sourcecode.
+    required: true
 runs:
   using: node12
   main: index.js
