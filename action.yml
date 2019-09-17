@@ -19,13 +19,14 @@ inputs:
     required: true
 runs:
   using: "node12"
-  main: "index.js"
   env:
-    RELEASE: ${{ inputs.release }}
-    PLATFORM: ${{ inputs.platform }}
-    SVN: ${{ inputs.svn }}
-    SVN_ICECUBE_USERNAME: ${{ inputs.svn_icecube_username }}
-    SVN_ICECUBE_PASSWORD: ${{ inputs.svn_icecube_password }}
+    FOO: bar
+    #RELEASE: ${{ inputs.release }}
+    #PLATFORM: ${{ inputs.platform }}
+    #SVN: ${{ inputs.svn }}
+    #SVN_ICECUBE_USERNAME: ${{ inputs.svn_icecube_username }}
+    #SVN_ICECUBE_PASSWORD: ${{ inputs.svn_icecube_password }}
+  main: "index.js"
 branding:
   icon: code
   color: blue
