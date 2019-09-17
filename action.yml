@@ -18,14 +18,14 @@ inputs:
     description: The svn password to use to fetch the icecube-simulation sourcecode.
     required: true
 runs:
-  using: node12
-  main: index.js
-  with:
-    release: ${{ inputs.release }}
-    platform: ${{ inputs.platform }}
-    svn: ${{ inputs.svn }}
-    svn_icecube_username: ${{ inputs.svn_icecube_username }}
-    svn_icecube_password: ${{ inputs.svn_icecube_password }}
+  using: "node12"
+  main: "index.js"
+  env:
+    RELEASE: ${{ inputs.release }}
+    PLATFORM: ${{ inputs.platform }}
+    SVN: ${{ inputs.svn }}
+    SVN_ICECUBE_USERNAME: ${{ inputs.svn_icecube_username }}
+    SVN_ICECUBE_PASSWORD: ${{ inputs.svn_icecube_password }}
 branding:
   icon: code
   color: blue
