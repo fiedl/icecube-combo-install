@@ -8,11 +8,11 @@ This repository provides reproducible install instructions for the icecube-simul
 
 The file [install.sh](install.sh) contains instructions on how to install the icecube-simulation framework on macOS and Ubuntu.
 
-## Use as Github Action
+ ## Use as Github Action
 
 In order to have icecube-simulation built during a [github-actions workflow](https://github.com/features/actions), you may include this script as workflow step like this:
 
-```
+```yaml
 # .github/workflows/build.yml
 
 name: build
@@ -24,16 +24,25 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: "Checkout and build icecube-simulation framework"
-      uses: fiedl/icecube-simulation-install
+      run: curl https://raw.githubusercontent.com/fiedl/icecube-simulation-install/master/install.sh | sudo bash -v -e
       env:
         RELEASE: V06-01-01
         PLATFORM: ubuntu-18.04
         SVN: ${{ secrets.SVN }}
         SVN_ICECUBE_USERNAME: icecube
         SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
+    - name: "Checkout and build your sub-project against icecube-simulation"
+      # ...
 ```
 
 This will checkout icecube-simulation into `~/icecube/software/icecube-simulation-V06-01-01/src` and build it into `~/icecube/software/icecube-simulation-V06-01-01/debug_build`.
+
+Parameters:
+- `RELEASE`: The release number of the icecube-simulation framework you would like to install. May be a release like "V06-01-01", or "trunk", which will fetch the current svn trunk of the framework.
+- `PLATFORM`: The operating system, the script will run on. This is needed to install the dependencies with the appropriate package manager. Supported: "ubuntu-18.04", "macOS-10.14"
+- `SVN`: The url of our svn repository, ending with "/svn".
+- `SVN_ICECUBE_USERNAME`: The svn user to use to fetch the icecube-simulation sourcecode.
+- `SVN_ICECUBE_PASSWORD`: The svn password to use to fetch the icecube-simulation sourcecode.
 
 For a working example, have a look at:
 - TODO: monopole-generator

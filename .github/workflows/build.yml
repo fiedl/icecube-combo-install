@@ -14,18 +14,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - uses: ./
-      with:
-        release: ${{ matrix.release }}
-        platform: ${{ matrix.platform }}
-        svn: ${{ secrets.SVN }}
-        svn_icecube_username: icecube
-        svn_icecube_password: ${{ secrets.SVN_ICECUBE_PASSWORD }}
-    #- name: Build icecube-simulation
-    #  run: bash -v -e ./install.sh
-    #  env:
-    #    RELEASE: ${{ matrix.release }}
-    #    SVN: ${{ secrets.SVN }}
-    #    SVN_ICECUBE_USERNAME: icecube
-    #    SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
-    #    PLATFORM: ${{ matrix.platform }}
+    - name: Build icecube-simulation
+      run: bash -v -e ./install.sh
+      env:
+        RELEASE: ${{ matrix.release }}
+        SVN: ${{ secrets.SVN }}
+        SVN_ICECUBE_USERNAME: icecube
+        SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
+        PLATFORM: ${{ matrix.platform }}
