@@ -9,12 +9,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        release: [V06-01-01, trunk]
+        release: [V00-00-00-RC2, trunk, stable]
         platform: [macOS-10.14, ubuntu-18.04]
 
     steps:
     - uses: actions/checkout@v1
-    - name: Build icecube-simulation
+    - name: Build icecube-combo
       run: bash -v -e ./install.sh
       env:
         RELEASE: ${{ matrix.release }}

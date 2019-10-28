@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "jhcook/macos-sierra"
+  config.vm.box = "yzgyyang/macOS-10.14" # mojave, https://app.vagrantup.com/yzgyyang/boxes/macOS-10.14
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -65,14 +65,16 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "file", source: "./install.sh", destination: "/Users/vagrant/install.sh"
   config.vm.provision "file", source: "./.secrets.sh", destination: "/Users/vagrant/.secrets.sh"
-  config.vm.provision "file", source: "./patches/python.cmake.patch", destination: "/Users/vagrant/patches/python.cmake.patch"
-  config.vm.provision "file", source: "./patches/muongun-histogram.cxx.patch", destination: "/Users/vagrant/patches/muongun-histogram.cxx.patch"
-  config.vm.provision "file", source: "./patches/boost.cmake.patch", destination: "/Users/vagrant/patches/boost.cmake.patch"
+  # config.vm.provision "file", source: "./patches/python.cmake.patch", destination: "/Users/vagrant/patches/python.cmake.patch"
+  # config.vm.provision "file", source: "./patches/muongun-histogram.cxx.patch", destination: "/Users/vagrant/patches/muongun-histogram.cxx.patch"
+  # config.vm.provision "file", source: "./patches/boost.cmake.patch", destination: "/Users/vagrant/patches/boost.cmake.patch"
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
     whoami
     cd
     pwd
     bash ./.secrets.sh
+    export PLATFORM="macOS-10.14"
+    export RELEASE=#{ENV['RELEASE'] || "stable"}
     bash -v -e ./install.sh
   SHELL
 end
