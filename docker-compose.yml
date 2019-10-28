@@ -1,0 +1,10 @@
+version: '3'
+services:
+  build:
+    image: ubuntu:18.04
+    environment:
+      RELEASE: ${RELEASE:-stable} # Use the host's $RELEASE environment variable, default to "stable".
+      PLATFORM: ubuntu-18.04
+    volumes:
+      - .:/code
+    command: /code/entrypoint.sh

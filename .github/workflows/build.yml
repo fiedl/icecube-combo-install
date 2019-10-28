@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        release: [V00-00-00-RC2, trunk, stable]
+        release: [V00-00-00-RC2, stable, trunk]
         platform: [macOS-10.14, ubuntu-18.04]
 
     steps:

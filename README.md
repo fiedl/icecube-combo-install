@@ -48,6 +48,31 @@ For a working example, have a look at:
 - TODO: monopole-generator
 - TODO: clsim
 
+## Automated Build Using Ubuntu on Docker
+
+In order to have the install script run in a docker container running ubuntu, this repository provides a [docker-compose.yml](docker-compose.yml) file.
+
+```bash
+# Clone this repository
+git clone git@github.com:fiedl/icecube-combo-install.git
+```
+
+For the automated code checkout to work, you need to provide svn credentials in a secrets file, which is not included in this repository. Please create the following file and provide credentials there:
+
+```bash
+# .secrets.sh
+export SVN="our svn url"
+export SVN_ICECUBE_USERNAME="our svn username"
+export SVN_ICECUBE_PASSWORD="our svn password"
+```
+
+After that, run the docker container:
+
+```bash
+docker-compose up
+```
+
+
 ## Automated Build Using Vagrant on macOS
 
 In order to have the install scriot run on a virtual machine, this repository provides [Vagrant](http://vagrantup.com) instructions in the [Vagrantfile](Vagrantfile).

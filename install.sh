@@ -32,10 +32,21 @@ if [[ "$PLATFORM" = "macOS-10.14" ]]; then
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
+# Install fundamentals
+if [[ "$PLATFORM" = "ubuntu-18.04" ]]; then
+  apt-get update
+  apt-get install -y sudo
+  apt-get install -y subversion # svn
+fi
+
 # Install python 3
 if [[ "$PLATFORM" = "macOS-10.14" ]]; then
   brew info python
   brew list python || brew install python
+elif [[ "$PLATFORM" = "ubuntu-18.04" ]]; then
+  apt-get install -y python3 virtualenv
+  virtualenv -p /usr/bin/python3 py3env
+  source py3env/bin/activate
 fi
 
 # Install boost with python bindings
@@ -45,6 +56,8 @@ if [[ "$PLATFORM" = "macOS-10.14" ]]; then
   brew info boost-python
   brew info boost-python3
   brew install fiedl/homebrew-icecube/boost-python3@1.69
+elif [[ "$PLATFORM" = "ubuntu-18.04" ]]; then
+  apt-get install -y libboost-all-dev libboost-python1.65.1
 fi
 
 # Install python packages
@@ -55,12 +68,13 @@ pip install scipy
 if [[ "$PLATFORM" = "macOS-10.14" ]]; then
   brew list cmake || brew install cmake
   brew install gsl cfitsio
-else
+elif [[ "$PLATFORM" = "ubuntu-18.04" ]]; then
+  apt-get install -y build-essential cmake
+  apt-get install -y libz-dev libgsl0-dev libcfitsio-dev
   # http://software.icecube.wisc.edu/documentation/projects/cmake/supported_platforms/debian_variants.html
-  sudo apt update
-  sudo apt-get install build-essential cmake libbz2-dev libgl1-mesa-dev freeglut3-dev libxml2-dev subversion libboost-python-dev libboost-system-dev libboost-thread-dev libboost-date-time-dev libboost-serialization-dev libboost-filesystem-dev libboost-program-options-dev libboost-regex-dev libboost-iostreams-dev libgsl0-dev libcdk5-dev libarchive-dev python-scipy ipython-qtconsole libqt4-dev python-urwid
-  sudo apt-get install libz-dev libqt5opengl5-dev libstarlink-pal-dev python-sphinx libopenblas-dev
-  sudo apt-get install libcfitsio-dev libsprng2-dev libmysqlclient-dev libsuitesparse-dev
+  # sudo apt-get install build-essential cmake libbz2-dev libgl1-mesa-dev freeglut3-dev libxml2-dev subversion libboost-python-dev libboost-system-dev libboost-thread-dev libboost-date-time-dev libboost-serialization-dev libboost-filesystem-dev libboost-program-options-dev libboost-regex-dev libboost-iostreams-dev libgsl0-dev libcdk5-dev libarchive-dev python-scipy ipython-qtconsole libqt4-dev python-urwid
+  # sudo apt-get install libz-dev libqt5opengl5-dev libstarlink-pal-dev python-sphinx libopenblas-dev
+  # sudo apt-get install libcfitsio-dev libsprng2-dev libmysqlclient-dev libsuitesparse-dev
 fi
 
 # Install qt5 needed for steamshovel event display viewer
