@@ -77,6 +77,11 @@ elif [[ "$PLATFORM" = "ubuntu-18.04" ]]; then
   # sudo apt-get install libcfitsio-dev libsprng2-dev libmysqlclient-dev libsuitesparse-dev
 fi
 
+# Install opencl
+if [[ "$PLATFORM" = "ubuntu-18.04" ]]; then
+  apt-get install -y ocl-icd-opencl-dev
+fi
+
 # Install qt5 needed for steamshovel event display viewer
 if [[ "$PLATFORM" = "macOS-10.14" ]]; then
   brew info qt
