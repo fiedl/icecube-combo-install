@@ -63,7 +63,7 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  config.vm.provision "file", source: "./install-on-mac-os-sierra.sh", destination: "/Users/vagrant/install-on-mac-os-sierra.sh"
+  config.vm.provision "file", source: "./install.sh", destination: "/Users/vagrant/install.sh"
   config.vm.provision "file", source: "./.secrets.sh", destination: "/Users/vagrant/.secrets.sh"
   config.vm.provision "file", source: "./patches/python.cmake.patch", destination: "/Users/vagrant/patches/python.cmake.patch"
   config.vm.provision "file", source: "./patches/muongun-histogram.cxx.patch", destination: "/Users/vagrant/patches/muongun-histogram.cxx.patch"
@@ -73,6 +73,6 @@ Vagrant.configure("2") do |config|
     cd
     pwd
     bash ./.secrets.sh
-    bash -v -e ./install-on-mac-os-sierra.sh
+    bash -v -e ./install.sh
   SHELL
 end
