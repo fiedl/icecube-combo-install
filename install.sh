@@ -86,13 +86,13 @@ if [ ! -d $ICECUBE_COMBO_ROOT/src ]; then
     source .secrets.sh
   fi
   if [[ $RELEASE =~ "-RC" ]]; then
-    SVN_PATH = "meta-projects/combo/candidates/$RELEASE"
+    export SVN_PATH="meta-projects/combo/candidates/$RELEASE"
   elif [[ $RELEASE = "stable" ]]; then
-    SVN_PATH = "meta-projects/combo/stable"
+    export SVN_PATH="meta-projects/combo/stable"
   elif [[ $RELEASE = "trunk" ]]; then
-    SVN_PATH = "meta-projects/combo/trunk"
+    export SVN_PATH="meta-projects/combo/trunk"
   else
-    SVN_PATH = "meta-projects/combo/releases/$RELEASE"
+    export SVN_PATH="meta-projects/combo/releases/$RELEASE"
   fi
   svn --username $SVN_ICECUBE_USERNAME --password $SVN_ICECUBE_PASSWORD co $SVN/$SVN_PATH/ $ICECUBE_COMBO_ROOT/src
 fi
