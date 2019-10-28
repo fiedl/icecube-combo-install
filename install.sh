@@ -39,6 +39,7 @@ fi
 
 # Install fundamentals
 if [[ "$PLATFORM" = "ubuntu-18.04" ]]; then
+  sudo apt-get update
   sudo apt-get install -y subversion # svn
 fi
 
