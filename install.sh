@@ -128,11 +128,14 @@ if [[ ! -z $EXCLUDE_PROJECTS ]]; then
   done
 fi
 
+if [[ "$PLATFORM" = "macOS-10.14" ]]; then
+  # Patch cmake file to find pymalloc version of python installed by homebrew
+  # https://github.com/fiedl/hole-ice-install/issues/1
+  patch --force $ICECUBE_COMBO_ROOT/src/cmake/tools/python.cmake < ./patches/python.cmake.patch
+fi
+
 #if [[ $RELEASE = "V06-01-01" ]]; then
 #
-#  # Patch cmake file to find pymalloc version of python installed by homebrew
-#  # https://github.com/fiedl/hole-ice-install/issues/1
-#  patch --force $ICECUBE_COMBO_ROOT/src/cmake/tools/python.cmake < ./patches/python.cmake.patch
 #
 #  # Patch muongun pybindings to add missing static cast
 #  # https://github.com/fiedl/hole-ice-install/issues/2
