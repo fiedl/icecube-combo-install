@@ -56,10 +56,10 @@ fi
 # Install boost with python bindings
 if [[ "$PLATFORM" = "macOS-10.14" ]]; then
   brew info boost
-  brew install fiedl/homebrew-icecube/boost@1.69
+  brew install boost
   brew info boost-python
   brew info boost-python3
-  brew install fiedl/homebrew-icecube/boost-python3@1.69
+  brew install boost-python3
 elif [[ "$PLATFORM" = "ubuntu-18.04" ]]; then
   sudo apt-get install -y libboost-all-dev libboost-python1.65.1
 fi
