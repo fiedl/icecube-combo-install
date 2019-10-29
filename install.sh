@@ -160,8 +160,7 @@ fi
 mkdir -p $ICECUBE_COMBO_ROOT/debug_build
 cd $ICECUBE_COMBO_ROOT/debug_build
 cmake -D CMAKE_BUILD_TYPE=Debug -D SYSTEM_PACKAGES=true -D CMAKE_BUILD_TYPE:STRING=Debug ../src
-source ./env-shell.sh
-make -j 6
+./env-shell.sh make -j 6
 
 # # Build the release
 # mkdir -p $ICECUBE_COMBO_ROOT/build
