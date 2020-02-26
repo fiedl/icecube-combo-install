@@ -61,6 +61,8 @@ brew list python || brew install python
 # Python path when installed via homebrew
 export PATH=/usr/local/opt/python/libexec/bin:$PATH
 export PATH=$PATH:~/linuxbrew/opt/python/libexec/bin
+export HOMEBREW_PYTHON_ROOT="$(brew --prefix)/opt/python"
+export CMAKE_PYTHON_OPTIONS="-D Python_EXECUTABLE=$HOMEBREW_PYTHON_ROOT/libexec/bin -D Python_LIBRARY=$HOMEBREW_PYTHON_ROOT/lib -D Python_INCLUDE_DIR=$HOMEBREW_PYTHON_ROOT/include"
 
 # Install boost with python bindings
 brew info boost
@@ -174,7 +176,7 @@ fi
 # Build the release
 mkdir -p $ICECUBE_COMBO_BUILD
 cd $ICECUBE_COMBO_BUILD
-cmake -D CMAKE_BUILD_TYPE=Debug -D SYSTEM_PACKAGES=true -D CMAKE_BUILD_TYPE:STRING=Debug $ICECUBE_COMBO_SRC
+cmake -D CMAKE_BUILD_TYPE=Debug -D SYSTEM_PACKAGES=true -D CMAKE_BUILD_TYPE:STRING=Debug $CMAKE_PYTHON_OPTIONS $ICECUBE_COMBO_SRC
 ./env-shell.sh make -j 4
 
 # # Build the release
