@@ -9,7 +9,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        release: [V00-00-00-RC2, stable, trunk]
         platform: [macOS-10.14, ubuntu-18.04]
 
     steps:
@@ -17,8 +16,5 @@ jobs:
     - name: Build icecube-combo
       run: bash -v -e ./install.sh
       env:
-        RELEASE: ${{ matrix.release }}
-        SVN: ${{ secrets.SVN }}
-        SVN_ICECUBE_USERNAME: icecube
-        SVN_ICECUBE_PASSWORD: ${{ secrets.SVN_ICECUBE_PASSWORD }}
+        GIT_REPO_URL: ${{ secrets.GIT_REPO_URL }}
         PLATFORM: ${{ matrix.platform }}

@@ -5,6 +5,12 @@
 #
 # https://github.com/fiedl/icecube-combo-install
 #
+# When using the IceTrayCombo github repository as source, please define:
+#
+#     export GIT_REPO_URL=https://username:token@github.com/repo.git
+#
+# When using svn as source:
+#
 # If you would like to use a release, set the `RELEASE` environment variable
 # to the appropriate icecube-combo release number.
 #
@@ -18,7 +24,7 @@
 # In this repository, the `RELEASE` environment varibale is set by the
 # github-actions build matrix.
 
-[[ -z "$RELEASE" ]] && echo "Please set the RELEASE environment variable, e.g.: 'export RELEASE=V00-00-00-RC2' or 'export RELEASE=trunk'." && exit 1
+[[ -z "$GIT_REPO_URL" ]] && [[ -z "$RELEASE" ]] && echo "Please set the RELEASE environment variable, e.g.: 'export RELEASE=V00-00-00-RC2' or 'export RELEASE=trunk'." && exit 1
 
 # Homebrew paths
 export PATH=/usr/local/bin:$PATH
@@ -99,32 +105,38 @@ fi
 
 # This is where the icecube software will live
 export ICECUBE_ROOT="$HOME/icecube/software"
-export ICECUBE_COMBO_ROOT=$ICECUBE_ROOT/icecube-combo-$RELEASE
-export ICECUBE_COMBO=$ICECUBE_COMBO_ROOT/debug_build
+export ICECUBE_COMBO_ROOT="$ICECUBE_ROOT/combo"
+export ICECUBE_COMBO_SRC="$ICECUBE_COMBO_ROOT/src"
+export ICECUBE_COMBO_BUILD="$ICECUBE_COMBO_ROOT/build"
 
 # Get icecube-combo code from svn repository
 mkdir -p $ICECUBE_COMBO_ROOT
-if [ ! -d $ICECUBE_COMBO_ROOT/src ]; then
-  if [[ -z $SVN_ICECUBE_USERNAME ]]; then
+if [ ! -d $ICECUBE_COMBO_SRC ]; then
+  if [[ -z $SVN_ICECUBE_USERNAME ]] && [[ -z $GIT_REPO_URL ]]; then
     source .secrets.sh
   fi
-  if [[ $RELEASE =~ "-RC" ]]; then
-    export SVN_PATH="meta-projects/combo/candidates/$RELEASE"
-  elif [[ $RELEASE = "stable" ]]; then
-    export SVN_PATH="meta-projects/combo/stable"
-  elif [[ $RELEASE = "trunk" ]]; then
-    export SVN_PATH="meta-projects/combo/trunk"
+  if [[ ! -z $GIT_REPO_URL ]]; then
+    sudo apt-get install -y git
+    git clone $GIT_REPO_URL $ICECUBE_COMBO_SRC
   else
-    export SVN_PATH="meta-projects/combo/releases/$RELEASE"
+    if [[ $RELEASE =~ "-RC" ]]; then
+      export SVN_PATH="meta-projects/combo/candidates/$RELEASE"
+    elif [[ $RELEASE = "stable" ]]; then
+      export SVN_PATH="meta-projects/combo/stable"
+    elif [[ $RELEASE = "trunk" ]]; then
+      export SVN_PATH="meta-projects/combo/trunk"
+    else
+      export SVN_PATH="meta-projects/combo/releases/$RELEASE"
+    fi
+    svn --username $SVN_ICECUBE_USERNAME --password $SVN_ICECUBE_PASSWORD co $SVN/$SVN_PATH/ $ICECUBE_COMBO_SRC
   fi
-  svn --username $SVN_ICECUBE_USERNAME --password $SVN_ICECUBE_PASSWORD co $SVN/$SVN_PATH/ $ICECUBE_COMBO_ROOT/src
 fi
 
 # Exclude projects if requested by environment variable,
 # which is used on travis to avoid the execution-time limit
 if [[ ! -z $EXCLUDE_PROJECTS ]]; then
   for project in $EXCLUDE_PROJECTS; do
-    rm -rf $ICECUBE_COMBO_ROOT/src/$project
+    rm -rf $ICECUBE_COMBO_SRC/$project
   done
 fi
 
@@ -136,7 +148,7 @@ fi
 # https://icecube-spno.slack.com/archives/C02KQL9KN/p1572367112229900
 #
 if [[ $RELEASE = "V00-00-00-RC2" ]]; then
-  patch --force $ICECUBE_COMBO_ROOT/src/cmake/tools/python.cmake < ./patches/python.cmake.patch
+  patch --force $ICECUBE_COMBO_SRC/cmake/tools/python.cmake < ./patches/python.cmake.patch
 fi
 
 #if [[ $RELEASE = "V06-01-01" ]]; then
@@ -144,29 +156,28 @@ fi
 #
 #  # Patch muongun pybindings to add missing static cast
 #  # https://github.com/fiedl/hole-ice-install/issues/2
-#  if [[ -d $ICECUBE_COMBO_ROOT/src/MuonGun ]]; then
-#    patch --force $ICECUBE_COMBO_ROOT/src/MuonGun/private/pybindings/histogram.cxx < ./patches/muongun-histogram.cxx.patch
+#  if [[ -d $ICECUBE_COMBO_SRC/MuonGun ]]; then
+#    patch --force $ICECUBE_COMBO_SRC/MuonGun/private/pybindings/histogram.cxx < ./patches/muongun-histogram.cxx.patch
 #  fi
 #
 #  # Patch cmake file to drop requirement of the boost_signals library,
 #  # which has been dropped in boost 1.69
 #  # https://github.com/fiedl/hole-ice-install/issues/3
 #  # https://code.icecube.wisc.edu/projects/icecube/ticket/2232
-#  patch --force $ICECUBE_COMBO_ROOT/src/cmake/tools/boost.cmake < ./patches/boost.cmake.patch
+#  patch --force $ICECUBE_COMBO_SRC/cmake/tools/boost.cmake < ./patches/boost.cmake.patch
 #
 #fi
 
-# Build the release (debug)
-mkdir -p $ICECUBE_COMBO_ROOT/debug_build
-cd $ICECUBE_COMBO_ROOT/debug_build
-cmake -D CMAKE_BUILD_TYPE=Debug -D SYSTEM_PACKAGES=true -D CMAKE_BUILD_TYPE:STRING=Debug ../src
-# source ./env-shell.sh  # <--- is this needed here?
-make -j 6
+# Build the release
+mkdir -p $ICECUBE_COMBO_BUILD
+cd $ICECUBE_COMBO_BUILD
+cmake -D CMAKE_BUILD_TYPE=Debug -D SYSTEM_PACKAGES=true -D CMAKE_BUILD_TYPE:STRING=Debug $ICECUBE_COMBO_SRC
+./env-shell.sh make -j 4
 
 # # Build the release
 # mkdir -p $ICECUBE_COMBO_ROOT/build
 # cd $ICECUBE_COMBO_ROOT/build
-# cmake -D CMAKE_BUILD_TYPE=Release -D SYSTEM_PACKAGES=true -D CMAKE_BUILD_TYPE:STRING=Release ../src
+# cmake -D CMAKE_BUILD_TYPE=Release -D SYSTEM_PACKAGES=true -D CMAKE_BUILD_TYPE:STRING=Release $ICECUBE_COMBO_SRC
 # ./env-shell.sh
 # make -j 2
 
