@@ -61,8 +61,7 @@ brew list python || brew install python
 # Python path when installed via homebrew
 export PATH=/usr/local/opt/python/libexec/bin:$PATH
 export PATH=$PATH:~/linuxbrew/opt/python/libexec/bin
-export HOMEBREW_PYTHON_ROOT="$(brew --prefix)/opt/python"
-export CMAKE_PYTHON_OPTIONS="-D Python_EXECUTABLE=$HOMEBREW_PYTHON_ROOT/libexec/bin -D Python_LIBRARY=$HOMEBREW_PYTHON_ROOT/lib -D Python_INCLUDE_DIR=$HOMEBREW_PYTHON_ROOT/include"
+export CMAKE_PYTHON_OPTIONS="-D Python_ROOT_DIR=$(brew --prefix)/opt/python"
 
 # Install boost with python bindings
 brew info boost
