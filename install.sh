@@ -116,7 +116,7 @@ if [ ! -d $ICECUBE_COMBO_SRC ]; then
     source .secrets.sh
   fi
   if [[ ! -z $GIT_REPO_URL ]]; then
-    sudo apt-get install -y git
+    [[ "$PLATFORM" = "ubuntu-18.04" ]] && sudo apt-get install -y git
     git clone $GIT_REPO_URL $ICECUBE_COMBO_SRC
   else
     if [[ $RELEASE =~ "-RC" ]]; then
