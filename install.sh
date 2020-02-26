@@ -26,21 +26,26 @@
 
 [[ -z "$GIT_REPO_URL" ]] && [[ -z "$RELEASE" ]] && echo "Please set the RELEASE environment variable, e.g.: 'export RELEASE=V00-00-00-RC2' or 'export RELEASE=trunk'." && exit 1
 
+# On docker, the user is already root, but `sudo` is missing.
+if [[ "$PLATFORM" = "ubuntu-18.04" ]]; then
+  which sudo || (apt-get update && apt-get install -y sudo)
+fi
+
 # Homebrew paths
 export PATH=/usr/local/bin:$PATH
 export PATH=/usr/local/sbin:$PATH
 
-# Python path when installed via homebrew
-export PATH=/usr/local/opt/python/libexec/bin:$PATH
-
 # Install Homebrew package manager (http://brew.sh):
 if [[ "$PLATFORM" = "macOS-10.14" ]]; then
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-fi
-
-# On docker, the user is already root, but `sudo` is missing.
-if [[ "$PLATFORM" = "ubuntu-18.04" ]]; then
-  which sudo || (apt-get update && apt-get install -y sudo)
+elif [[ "$PLATFORM" = "ubuntu-18.04" ]]; then
+  # https://docs.brew.sh/Homebrew-on-Linux
+  sudo apt-get install -y git curl build-essential
+  git clone https://github.com/Homebrew/brew /linuxbrew/Homebrew
+  mkdir /linuxbrew/bin
+  ln -s /linuxbrew/Homebrew/bin/brew /linuxbrew/bin
+  eval $(/linuxbrew/bin/brew shellenv)
+  export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:/linuxbrew
 fi
 
 # Install fundamentals
@@ -59,16 +64,16 @@ elif [[ "$PLATFORM" = "ubuntu-18.04" ]]; then
   source py3env/bin/activate
 fi
 
+# Python path when installed via homebrew
+export PATH=/usr/local/opt/python/libexec/bin:$PATH
+export PATH=$PATH:/linuxbrew/opt/python/libexec/bin
+
 # Install boost with python bindings
-if [[ "$PLATFORM" = "macOS-10.14" ]]; then
-  brew info boost
-  brew install boost
-  brew info boost-python
-  brew info boost-python3
-  brew install boost-python3
-elif [[ "$PLATFORM" = "ubuntu-18.04" ]]; then
-  sudo apt-get install -y libboost-all-dev libboost-python1.65.1
-fi
+brew info boost
+brew install boost
+brew info boost-python
+brew info boost-python3
+brew install boost-python3
 
 # Install python packages
 pip install numpy
