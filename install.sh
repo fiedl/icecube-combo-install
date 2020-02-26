@@ -55,14 +55,8 @@ if [[ "$PLATFORM" = "ubuntu-18.04" ]]; then
 fi
 
 # Install python 3
-if [[ "$PLATFORM" = "macOS-10.14" ]]; then
-  brew info python
-  brew list python || brew install python
-elif [[ "$PLATFORM" = "ubuntu-18.04" ]]; then
-  sudo apt-get install -y python3 virtualenv
-  virtualenv -p /usr/bin/python3 py3env
-  source py3env/bin/activate
-fi
+brew info python
+brew list python || brew install python
 
 # Python path when installed via homebrew
 export PATH=/usr/local/opt/python/libexec/bin:$PATH
@@ -80,17 +74,21 @@ pip install numpy
 pip install scipy
 
 # Install packages needed for building icecube-combo
-if [[ "$PLATFORM" = "macOS-10.14" ]]; then
-  brew list cmake || brew install cmake
-  brew install gsl cfitsio
-elif [[ "$PLATFORM" = "ubuntu-18.04" ]]; then
-  sudo apt-get install -y build-essential cmake
-  sudo apt-get install -y libz-dev libgsl0-dev libcfitsio-dev
-  # http://software.icecube.wisc.edu/documentation/projects/cmake/supported_platforms/debian_variants.html
-  # sudo apt-get install build-essential cmake libbz2-dev libgl1-mesa-dev freeglut3-dev libxml2-dev subversion libboost-python-dev libboost-system-dev libboost-thread-dev libboost-date-time-dev libboost-serialization-dev libboost-filesystem-dev libboost-program-options-dev libboost-regex-dev libboost-iostreams-dev libgsl0-dev libcdk5-dev libarchive-dev python-scipy ipython-qtconsole libqt4-dev python-urwid
-  # sudo apt-get install libz-dev libqt5opengl5-dev libstarlink-pal-dev python-sphinx libopenblas-dev
-  # sudo apt-get install libcfitsio-dev libsprng2-dev libmysqlclient-dev libsuitesparse-dev
-fi
+brew list cmake || brew install cmake
+brew list gsl || brew install gsl
+brew list cfitsio || brew install cfitsio
+
+# if [[ "$PLATFORM" = "macOS-10.14" ]]; then
+#   brew list cmake || brew install cmake
+#   brew install gsl cfitsio
+# elif [[ "$PLATFORM" = "ubuntu-18.04" ]]; then
+#   sudo apt-get install -y build-essential cmake
+#   sudo apt-get install -y libz-dev libgsl0-dev libcfitsio-dev
+#   # http://software.icecube.wisc.edu/documentation/projects/cmake/supported_platforms/debian_variants.html
+#   # sudo apt-get install build-essential cmake libbz2-dev libgl1-mesa-dev freeglut3-dev libxml2-dev subversion libboost-python-dev libboost-system-dev libboost-thread-dev libboost-date-time-dev libboost-serialization-dev libboost-filesystem-dev libboost-program-options-dev libboost-regex-dev libboost-iostreams-dev libgsl0-dev libcdk5-dev libarchive-dev python-scipy ipython-qtconsole libqt4-dev python-urwid
+#   # sudo apt-get install libz-dev libqt5opengl5-dev libstarlink-pal-dev python-sphinx libopenblas-dev
+#   # sudo apt-get install libcfitsio-dev libsprng2-dev libmysqlclient-dev libsuitesparse-dev
+# fi
 
 # Install opencl
 if [[ "$PLATFORM" = "ubuntu-18.04" ]]; then
