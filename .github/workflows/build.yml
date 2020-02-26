@@ -16,7 +16,7 @@ jobs:
     - name: Remove pre-installed python
       uses: actions/setup-python@v1
       with:
-        python-version: []
+        python-version: ''
     - name: Build icecube-combo
       run: bash -v -e ./install.sh
       env:
