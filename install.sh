@@ -41,11 +41,11 @@ if [[ "$PLATFORM" = "macOS-10.14" ]]; then
 elif [[ "$PLATFORM" = "ubuntu-18.04" ]]; then
   # https://docs.brew.sh/Homebrew-on-Linux
   sudo apt-get install -y git curl build-essential
-  git clone https://github.com/Homebrew/brew /linuxbrew/Homebrew
-  mkdir /linuxbrew/bin
-  ln -s /linuxbrew/Homebrew/bin/brew /linuxbrew/bin
-  eval $(/linuxbrew/bin/brew shellenv)
-  export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:/linuxbrew
+  git clone https://github.com/Homebrew/brew ~/linuxbrew/Homebrew
+  mkdir ~/linuxbrew/bin
+  ln -s ~/linuxbrew/Homebrew/bin/brew ~/linuxbrew/bin
+  eval $(~/linuxbrew/bin/brew shellenv)
+  export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:~/linuxbrew
 fi
 
 # Install fundamentals
@@ -66,7 +66,7 @@ fi
 
 # Python path when installed via homebrew
 export PATH=/usr/local/opt/python/libexec/bin:$PATH
-export PATH=$PATH:/linuxbrew/opt/python/libexec/bin
+export PATH=$PATH:~/linuxbrew/opt/python/libexec/bin
 
 # Install boost with python bindings
 brew info boost
